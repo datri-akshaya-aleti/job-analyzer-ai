@@ -1,4 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, Form, Depends
+from ml.fraud_detector import detect_fraud
 from sqlalchemy.orm import Session
 from utils.resume_parser import parse_resume
 from ml.skill_extractor import analyze_resume
@@ -90,6 +91,7 @@ async def full_analysis(
     ats = calculate_ats_score(parsed["raw_text"], job_description)
     jobs = await fetch_jobs(analysis["skills"], country="in")
     matched_jobs = match_jobs_to_resume(parsed["raw_text"], jobs)
+    fraud_result = detect_fraud(job_description)
     if user_id:
         new_analysis = Analysis(
             user_id=user_id,
@@ -111,10 +113,16 @@ async def full_analysis(
         "experience_years": analysis["experience_years"],
         "ats_score": ats["ats_score"],
         "level": ats["level"],
+        "breakdown": ats["breakdown"],
+        "skills_found": ats["skills_found"],
+        "skills_missing": ats["skills_missing"],
         "missing_keywords": ats["missing_keywords"],
+        "improvement_tips": ats["improvement_tips"],
         "suggestion": ats["suggestion"],
+        "fraud_detection": fraud_result,
         "matched_jobs": matched_jobs[:5]
     }
+
 
 @router.get("/history")
 async def get_history(
