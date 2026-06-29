@@ -4,6 +4,7 @@ import "./App.css";
 import Auth from "./Auth";
 import Sidebar from "./Sidebar";
 import Games from "./Games";
+import History from "./History";
 
 function NeuralBackground() {
   const canvasRef = useRef(null);
@@ -165,7 +166,10 @@ function App() {
 
       {activePage === "games" ? (
         <Games />
+      ) : activePage === "history" ? (
+        <History token={token} />
       ) : (
+
         <>
           <header className="header">
             <NeuralBackground />

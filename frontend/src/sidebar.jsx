@@ -6,6 +6,7 @@ function Sidebar({ activePage, setActivePage }) {
   const menuItems = [
     { id: "analyzer", icon: "📄", label: "Resume Analyzer" },
     { id: "games", icon: "🎮", label: "Aptitude Games" },
+    { id: "history", icon: "📊", label: "My History" },
   ];
 
   return (
