@@ -402,7 +402,7 @@ function App() {
                         <p>Salary: {job.salary_min !== "Not disclosed" ? job.salary_min + " - " + job.salary_max : "Not disclosed"}</p>
                         <p className="job-desc">{job.description}</p>
                         <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "12px" }}>
-                          <a href={job.apply_url} target="_blank" rel="noopener noreferrer" className="apply-btn">Apply Now</a>
+                          <a href={`https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(job.title)}&location=India`} target="_blank" rel="noopener noreferrer" className="apply-btn">Apply Now</a>
                           <button onClick={() => handleInterviewPrep(job.title, job.company, i)} className="apply-btn" style={{ background: "#0077b6", border: "none", cursor: "pointer" }}>
                             {loadingPrep[i] ? "Loading..." : "Interview Prep"}
                           </button>
