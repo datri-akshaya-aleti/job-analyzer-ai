@@ -5,6 +5,7 @@ import Auth from "./Auth";
 import Sidebar from "./Sidebar";
 import Games from "./Games";
 import History from "./History";
+import { ATSGauge, BreakdownChart, SkillsChart } from "./Charts";
 
 function NeuralBackground() {
   const canvasRef = useRef(null);
@@ -262,16 +263,36 @@ function App() {
 
             {result && (
               <div className="results">
-                <div className="score-card">
-                  <h2>Your ATS Score</h2>
-                  <div className="score-circle" style={{ borderColor: getScoreColor(result.ats_score) }}>
-                    <span style={{ color: getScoreColor(result.ats_score) }}>
-                      {result.ats_score}%
-                    </span>
-                  </div>
-                  <p className="level">{result.level}</p>
-                  <p className="suggestion">{result.suggestion}</p>
-                </div>
+                  <div className="score-card">
+                    <h2>Your ATS Score</h2>
+                    <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+                      <ATSGauge score={result.ats_score} />
+                     </div>
+
+                     <p className="level">{result.level}</p>
+                     <p className="suggestion">{result.suggestion}</p>
+
+                     <div style={{ 
+                        display: "grid", 
+                        gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
+                        gap: "30px", 
+                        marginTop: "30px",
+                        paddingTop: "20px",
+                        borderTop: "1px solid rgba(99,102,241,0.2)"
+                   }}>
+                  {result.breakdown && (
+                    <div style={{ background: "#0d1117", borderRadius: "16px", padding: "20px" }}>
+                       <BreakdownChart breakdown={result.breakdown} />
+                    </div>
+              )}
+              {result.skills_found && result.skills_missing && (
+                <div style={{ background: "#0d1117", borderRadius: "16px", padding: "20px" }}>
+                  <SkillsChart skillsFound={result.skills_found} skillsMissing={result.skills_missing} />
+               </div>
+          )}
+        </div>
+      </div>
+                   
 
                 {result.fraud_detection && (
                   <div style={{ background: "rgba(17, 24, 39, 0.8)", padding: "24px", borderRadius: "20px", marginBottom: "24px", border: `1px solid ${result.fraud_detection.color}`, backdropFilter: "blur(10px)" }}>
