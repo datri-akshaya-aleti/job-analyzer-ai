@@ -1,7 +1,12 @@
 import spacy
 
-nlp = spacy.load("en_core_web_sm")
+_nlp = None
 
+def get_nlp():
+    global _nlp
+    if _nlp is None:
+        _nlp = spacy.load("en_core_web_sm")
+    return _nlp
 SKILLS_LIST = [
     "python", "java", "javascript", "typescript", "c++", "c#", "r",
     "machine learning", "deep learning", "nlp", "computer vision",
@@ -33,6 +38,7 @@ def extract_experience_years(text: str) -> int:
 def analyze_resume(text: str) -> dict:
     skills = extract_skills(text)
     experience_years = extract_experience_years(text)
+    nlp = get_nlp()
     doc = nlp(text)
     entities = [(ent.text, ent.label_) for ent in doc.ents]
     
