@@ -8,6 +8,7 @@ function Auth({ onLogin }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true);
