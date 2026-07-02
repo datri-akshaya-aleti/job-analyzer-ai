@@ -1,71 +1,9 @@
-import { useEffect, useRef } from "react";
-
-function NeuralBackground() {
-  const canvasRef = useRef(null);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const nodes = [];
-    for (let i = 0; i < 80; i++) {
-      nodes.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 3 + 1,
-      });
-    }
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0a0a1a";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(99, 102, 241, ${1 - dist / 120})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-      for (let node of nodes) {
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.r, 0, Math.PI * 2);
-        ctx.fillStyle = "#6366f1";
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = "#6366f1";
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        node.x += node.vx;
-        node.y += node.vy;
-        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
-        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
-      }
-      requestAnimationFrame(draw);
-    }
-    draw();
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return <canvas ref={canvasRef} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0 }} />;
-}
+import AuroraBackground from "./Background";
 
 function UploadPage({ user, file, setFile, jobDescription, setJobDescription, error, loading, handleSubmit, handleLogout, onOpenSidebar }) {
   return (
     <div style={{ height: "100vh", width: "100vw", position: "relative", overflow: "hidden" }}>
-      <NeuralBackground />
+      <AuroraBackground />
 
       <button
         onClick={onOpenSidebar}
@@ -125,14 +63,15 @@ function UploadPage({ user, file, setFile, jobDescription, setJobDescription, er
         justifyContent: "center",
         padding: "80px 20px 20px"
       }}>
-        <div style={{
-          background: "rgba(17, 24, 39, 0.85)",
-          border: "1px solid rgba(99, 102, 241, 0.2)",
+        <div className="fade-in-up" style={{
+          background: "rgba(18, 20, 27, 0.78)",
+          border: "1px solid rgba(255, 255, 255, 0.08)",
           borderRadius: "24px",
           padding: "36px",
           width: "100%",
           maxWidth: "560px",
-          backdropFilter: "blur(10px)",
+          backdropFilter: "blur(18px)",
+          boxShadow: "0 25px 70px rgba(0, 0, 0, 0.45), 0 0 40px rgba(99, 102, 241, 0.08)",
           maxHeight: "calc(100vh - 110px)",
           overflowY: "auto"
         }}>
@@ -143,7 +82,7 @@ function UploadPage({ user, file, setFile, jobDescription, setJobDescription, er
             Upload your resume and a job description to get started
           </p>
 
-          <h3 style={{ color: "#818cf8", fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "10px", fontFamily: "Courier New" }}>
+          <h3 style={{ color: "#818cf8", fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "10px", fontFamily: "JetBrains Mono" }}>
             Upload Resume
           </h3>
           <div style={{
@@ -151,14 +90,14 @@ function UploadPage({ user, file, setFile, jobDescription, setJobDescription, er
             borderRadius: "14px",
             padding: "20px",
             textAlign: "center",
-            background: "rgba(10, 10, 26, 0.6)",
+            background: "rgba(10, 11, 16, 0.6)",
             marginBottom: "20px"
           }}>
             <p style={{ color: "#4b5563", marginBottom: "10px", fontSize: "0.85rem" }}>Drop your resume here or</p>
             <label style={{
               display: "inline-block",
               padding: "9px 22px",
-              background: "#6366f1",
+              background: "linear-gradient(135deg, #6366f1, #4f46e5)",
               color: "white",
               borderRadius: "8px",
               cursor: "pointer",
@@ -173,10 +112,10 @@ function UploadPage({ user, file, setFile, jobDescription, setJobDescription, er
                 style={{ display: "none" }}
               />
             </label>
-            {file && <p style={{ color: "#34d399", marginTop: "10px", fontSize: "0.8rem", fontFamily: "Courier New" }}>Selected: {file.name}</p>}
+            {file && <p style={{ color: "#34d399", marginTop: "10px", fontSize: "0.8rem", fontFamily: "JetBrains Mono" }}>Selected: {file.name}</p>}
           </div>
 
-          <h3 style={{ color: "#818cf8", fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "10px", fontFamily: "Courier New" }}>
+          <h3 style={{ color: "#818cf8", fontSize: "0.82rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "10px", fontFamily: "JetBrains Mono" }}>
             Job Description
           </h3>
           <textarea
@@ -187,7 +126,7 @@ function UploadPage({ user, file, setFile, jobDescription, setJobDescription, er
             style={{
               width: "100%",
               padding: "14px",
-              background: "rgba(10, 10, 26, 0.6)",
+              background: "rgba(10, 11, 16, 0.6)",
               border: "1px solid rgba(99, 102, 241, 0.2)",
               borderRadius: "12px",
               color: "#e2e8f0",
@@ -208,10 +147,11 @@ function UploadPage({ user, file, setFile, jobDescription, setJobDescription, er
           <button
             onClick={handleSubmit}
             disabled={loading}
+            className="btn-glow"
             style={{
               width: "100%",
               padding: "14px",
-              background: "#6366f1",
+              background: "linear-gradient(135deg, #6366f1, #4f46e5)",
               color: "white",
               border: "none",
               borderRadius: "12px",
@@ -219,7 +159,8 @@ function UploadPage({ user, file, setFile, jobDescription, setJobDescription, er
               fontWeight: "700",
               cursor: loading ? "not-allowed" : "pointer",
               opacity: loading ? 0.5 : 1,
-              boxShadow: "0 0 25px rgba(99,102,241,0.3)"
+              boxShadow: "0 0 25px rgba(99,102,241,0.3)",
+              transition: "box-shadow 0.3s ease, transform 0.15s ease"
             }}
           >
             {loading ? "Analyzing your resume..." : "Analyze Resume"}

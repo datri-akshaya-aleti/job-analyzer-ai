@@ -1,8 +1,32 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+:root {
+  --bg-0: #060709;
+  --bg-1: #0b0d12;
+  --surface: rgba(18, 20, 27, 0.72);
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --accent: #6366f1;
+  --accent-2: #22d3ee;
+  --accent-3: #a78bfa;
+}
+
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #0a0a1a;
+  font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
+  background: var(--bg-0);
   color: #e2e8f0;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
+
+::selection {
+  background: rgba(99, 102, 241, 0.35);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.25);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.4); }

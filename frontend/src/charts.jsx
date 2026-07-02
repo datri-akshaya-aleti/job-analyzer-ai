@@ -32,7 +32,7 @@ export function ATSGauge({ score }) {
         textTransform: "uppercase",
         letterSpacing: "1px",
         marginBottom: "20px",
-        fontFamily: "Courier New"
+        fontFamily: "JetBrains Mono"
       }}>
         ATS Score Gauge
       </p>
@@ -99,7 +99,7 @@ export function BreakdownChart({ breakdown }) {
 
   return (
     <div>
-      <p style={{ color: "#818cf8", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "16px", fontFamily: "Courier New" }}>
+      <p style={{ color: "#818cf8", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "16px", fontFamily: "JetBrains Mono" }}>
         Score Breakdown
       </p>
       <ResponsiveContainer width="100%" height={220}>
@@ -139,7 +139,7 @@ export function SkillsChart({ skillsFound, skillsMissing }) {
 
   return (
     <div>
-      <p style={{ color: "#818cf8", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "16px", fontFamily: "Courier New" }}>
+      <p style={{ color: "#818cf8", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "16px", fontFamily: "JetBrains Mono" }}>
         Skills Analysis
       </p>
       <ResponsiveContainer width="100%" height={220}>

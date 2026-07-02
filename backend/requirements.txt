@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-multipart
+PyMuPDF
+python-docx
+spacy
+nltk
+scikit-learn
+sentence-transformers
+sqlalchemy
+psycopg2-binary
+python-jose[cryptography]
+passlib[bcrypt]
+httpx
+requests
+python-dotenv
+linkedin

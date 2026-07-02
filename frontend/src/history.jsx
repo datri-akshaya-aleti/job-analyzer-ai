@@ -124,7 +124,7 @@ function History({ token }) {
               </div>
 
               <div style={{ marginBottom: "12px" }}>
-                <p style={{ color: "#6366f1", fontSize: "0.8rem", marginBottom: "8px", fontFamily: "Courier New" }}>
+                <p style={{ color: "#6366f1", fontSize: "0.8rem", marginBottom: "8px", fontFamily: "JetBrains Mono" }}>
                   SKILLS FOUND
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
@@ -136,7 +136,7 @@ function History({ token }) {
                       borderRadius: "6px",
                       fontSize: "0.75rem",
                       border: "1px solid rgba(99,102,241,0.2)",
-                      fontFamily: "Courier New"
+                      fontFamily: "JetBrains Mono"
                     }}>
                       {skill}
                     </span>
@@ -150,7 +150,7 @@ function History({ token }) {
               </div>
 
               <div style={{ marginBottom: "12px" }}>
-                <p style={{ color: "#f87171", fontSize: "0.8rem", marginBottom: "8px", fontFamily: "Courier New" }}>
+                <p style={{ color: "#f87171", fontSize: "0.8rem", marginBottom: "8px", fontFamily: "JetBrains Mono" }}>
                   MISSING KEYWORDS
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
@@ -162,7 +162,7 @@ function History({ token }) {
                       borderRadius: "6px",
                       fontSize: "0.75rem",
                       border: "1px solid rgba(239,68,68,0.2)",
-                      fontFamily: "Courier New"
+                      fontFamily: "JetBrains Mono"
                     }}>
                       {kw}
                     </span>

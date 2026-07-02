@@ -1,73 +1,11 @@
-import { useEffect, useRef } from "react";
-
-function NeuralBackground() {
-  const canvasRef = useRef(null);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const nodes = [];
-    for (let i = 0; i < 80; i++) {
-      nodes.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 3 + 1,
-      });
-    }
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0a0a1a";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(99, 102, 241, ${1 - dist / 120})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-      for (let node of nodes) {
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.r, 0, Math.PI * 2);
-        ctx.fillStyle = "#6366f1";
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = "#6366f1";
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        node.x += node.vx;
-        node.y += node.vy;
-        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
-        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
-      }
-      requestAnimationFrame(draw);
-    }
-    draw();
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return <canvas ref={canvasRef} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0 }} />;
-}
+import AuroraBackground from "./Background";
 
 function LandingPage({ onGetStarted }) {
   const features = ["Smart ATS Scoring", "Fraud Job Detection", "AI Job Matching", "Interview Prep Videos"];
 
   return (
     <div style={{ height: "100vh", width: "100vw", position: "relative", overflow: "hidden" }}>
-      <NeuralBackground />
+      <AuroraBackground dense />
 
       <nav style={{
         position: "absolute",
@@ -110,22 +48,23 @@ function LandingPage({ onGetStarted }) {
         textAlign: "center",
         padding: "0 20px"
       }}>
-        <h1 style={{ fontSize: "2.8rem", fontWeight: "800", color: "#fff", marginBottom: "12px" }}>
-          Job <span style={{ color: "#6366f1" }}>Analyzer</span> AI
+        <h1 className="fade-in-up fade-in-up-1" style={{ fontSize: "2.9rem", fontWeight: "800", color: "#fff", marginBottom: "12px", letterSpacing: "-0.02em" }}>
+          Job <span className="gradient-text">Analyzer</span> AI
         </h1>
-        <p style={{ color: "#94a3b8", fontFamily: "Courier New", fontSize: "0.95rem", marginBottom: "16px" }}>
+        <p className="fade-in-up fade-in-up-2" style={{ color: "#94a3b8", fontFamily: "JetBrains Mono", fontSize: "0.95rem", marginBottom: "16px" }}>
           // analyze.resume() find.dream.job()
         </p>
-        <p style={{ color: "#9ca3af", fontSize: "1rem", maxWidth: "560px", margin: "0 auto 24px", lineHeight: "1.6" }}>
+        <p className="fade-in-up fade-in-up-2" style={{ color: "#9ca3af", fontSize: "1rem", maxWidth: "560px", margin: "0 auto 24px", lineHeight: "1.6" }}>
           Upload your resume, get an AI powered ATS score, detect fraudulent job postings,
           and discover jobs that truly match your skills.
         </p>
 
         <button
           onClick={onGetStarted}
+          className="fade-in-up fade-in-up-3 btn-glow"
           style={{
             padding: "14px 36px",
-            background: "#6366f1",
+            background: "linear-gradient(135deg, #6366f1, #4f46e5)",
             color: "white",
             border: "none",
             borderRadius: "14px",
@@ -139,7 +78,7 @@ function LandingPage({ onGetStarted }) {
           Get Started Free →
         </button>
 
-        <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap", maxWidth: "600px" }}>
+        <div className="fade-in-up fade-in-up-4" style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap", maxWidth: "600px" }}>
           {features.map((f, i) => (
             <span key={i} style={{
               background: "rgba(99, 102, 241, 0.1)",
@@ -147,8 +86,9 @@ function LandingPage({ onGetStarted }) {
               padding: "5px 14px",
               borderRadius: "20px",
               fontSize: "0.75rem",
-              fontFamily: "Courier New",
-              border: "1px solid rgba(99, 102, 241, 0.2)"
+              fontFamily: "JetBrains Mono",
+              border: "1px solid rgba(99, 102, 241, 0.2)",
+              transition: "transform 0.2s ease, background 0.2s ease"
             }}>
               ✓ {f}
             </span>

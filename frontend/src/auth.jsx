@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import AuroraBackground from "./Background";
 
 function Auth({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true);
@@ -35,7 +36,8 @@ function Auth({ onLogin }) {
 
   return (
     <div className="auth-page">
-      <div className="auth-box">
+      <AuroraBackground />
+      <div className="auth-box fade-in-up">
         <div className="auth-header">
           <h2>{isLogin ? "Welcome Back!" : "Create Account"}</h2>
           <p>{isLogin ? "Login to analyze your resume" : "Join to get AI powered job insights"}</p>
@@ -95,7 +97,7 @@ function Auth({ onLogin }) {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="auth-btn"
+          className="auth-btn btn-glow"
         >
           {loading ? "Please wait..." : isLogin ? "Login" : "Register"}
         </button>

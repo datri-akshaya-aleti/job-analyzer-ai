@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import axios from "axios";
 import "./App.css";
 import Auth from "./Auth";
@@ -7,69 +7,8 @@ import UploadPage from "./UploadPage";
 import Sidebar from "./Sidebar";
 import Games from "./Games";
 import History from "./History";
+import AuroraBackground from "./Background";
 import { ATSGauge, BreakdownChart, SkillsChart } from "./Charts";
-
-function NeuralBackground() {
-  const canvasRef = useRef(null);
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const nodes = [];
-    for (let i = 0; i < 80; i++) {
-      nodes.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 3 + 1,
-      });
-    }
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#0a0a1a";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(99, 102, 241, ${1 - dist / 120})`;
-            ctx.lineWidth = 0.5;
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-      for (let node of nodes) {
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.r, 0, Math.PI * 2);
-        ctx.fillStyle = "#6366f1";
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = "#6366f1";
-        ctx.fill();
-        ctx.shadowBlur = 0;
-        node.x += node.vx;
-        node.y += node.vy;
-        if (node.x < 0 || node.x > canvas.width) node.vx *= -1;
-        if (node.y < 0 || node.y > canvas.height) node.vy *= -1;
-      }
-      requestAnimationFrame(draw);
-    }
-    draw();
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-  return <canvas ref={canvasRef} style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", zIndex: 0, opacity: 0.4 }} />;
-}
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -195,39 +134,45 @@ function App() {
 
   if (activePage === "games") {
     return (
-      <div className="app">
+      <div className="app" style={{ position: "relative" }}>
+        <AuroraBackground />
         <Sidebar activePage={activePage} setActivePage={setActivePage} externalOpen={sidebarOpen} setExternalOpen={setSidebarOpen} />
-        <nav className="navbar">
+        <nav className="navbar" style={{ position: "relative", zIndex: 5 }}>
           <div className="navbar-brand" style={{ marginLeft: "60px" }}>Job <span>Analyzer</span> AI</div>
           <div className="navbar-user">
             <p>Hello, {user ? user.name : ""}!</p>
             <button onClick={handleLogout} className="logout-btn">Logout</button>
           </div>
         </nav>
-        <Games />
+        <div style={{ position: "relative", zIndex: 5 }}>
+          <Games />
+        </div>
       </div>
     );
   }
 
   if (activePage === "history") {
     return (
-      <div className="app">
+      <div className="app" style={{ position: "relative" }}>
+        <AuroraBackground />
         <Sidebar activePage={activePage} setActivePage={setActivePage} externalOpen={sidebarOpen} setExternalOpen={setSidebarOpen} />
-        <nav className="navbar">
+        <nav className="navbar" style={{ position: "relative", zIndex: 5 }}>
           <div className="navbar-brand" style={{ marginLeft: "60px" }}>Job <span>Analyzer</span> AI</div>
           <div className="navbar-user">
             <p>Hello, {user ? user.name : ""}!</p>
             <button onClick={handleLogout} className="logout-btn">Logout</button>
           </div>
         </nav>
-        <History token={token} />
+        <div style={{ position: "relative", zIndex: 5 }}>
+          <History token={token} />
+        </div>
       </div>
     );
   }
 
   return (
     <div className="app" style={{ position: "relative" }}>
-      <NeuralBackground />
+      <AuroraBackground />
       <Sidebar activePage={activePage} setActivePage={setActivePage} externalOpen={sidebarOpen} setExternalOpen={setSidebarOpen} />
 
       <nav className="navbar" style={{ position: "relative", zIndex: 5 }}>
@@ -240,7 +185,7 @@ function App() {
 
       <div className="container" style={{ paddingTop: "30px", position: "relative", zIndex: 5 }}>
         <div className="results">
-          <div className="score-card">
+          <div className="score-card fade-in-up">
             <h2>Your ATS Score</h2>
             <div style={{ marginTop: "20px", marginBottom: "20px" }}>
               <ATSGauge score={result.ats_score} />
@@ -278,7 +223,7 @@ function App() {
               border: "1px solid " + result.fraud_detection.color,
               backdropFilter: "blur(10px)"
             }}>
-              <h2 style={{ color: "#818cf8", fontSize: "0.9rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "16px", fontFamily: "Courier New" }}>
+              <h2 style={{ color: "#818cf8", fontSize: "0.9rem", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "16px", fontFamily: "JetBrains Mono" }}>
                 Job Posting Verification
               </h2>
               <div style={{ display: "flex", alignItems: "center", gap: "15px", marginBottom: "12px" }}>
@@ -310,13 +255,13 @@ function App() {
           )}
 
           <div className="info-grid">
-            <div className="info-card">
+            <div className="info-card fade-in-up fade-in-up-1">
               <h3>Contact Info</h3>
               <p>Email: {result.email || "Not found"}</p>
               <p>Phone: {result.phone || "Not found"}</p>
               <p>Experience: {result.experience_years} years</p>
             </div>
-            <div className="info-card">
+            <div className="info-card fade-in-up fade-in-up-2">
               <h3>Skills Found ({result.skills.length})</h3>
               <div className="skills-list">
                 {result.skills.map(function (skill, i) {
@@ -324,7 +269,7 @@ function App() {
                 })}
               </div>
             </div>
-            <div className="info-card">
+            <div className="info-card fade-in-up fade-in-up-3">
               <h3>Missing Keywords</h3>
               <div className="skills-list">
                 {result.missing_keywords.map(function (kw, i) {
@@ -350,7 +295,7 @@ function App() {
           <div style={{ textAlign: "center", marginBottom: "20px" }}>
             <button
               onClick={function () { setResult(null); setFile(null); setJobDescription(""); setPrepData({}); }}
-              className="submit-btn"
+              className="submit-btn btn-glow"
               style={{ width: "300px" }}
             >
               Analyze Another Resume
@@ -364,7 +309,7 @@ function App() {
             ) : (
               result.matched_jobs.map(function (job, i) {
                 return (
-                  <div key={i} className="job-card">
+                  <div key={i} className="job-card fade-in-up" style={{ animationDelay: (0.05 * Math.min(i, 6)) + "s" }}>
                     <div className="job-header">
                       <h3>{job.title}</h3>
                       <span className="match-score" style={{ background: getScoreColor(job.match_score) }}>
